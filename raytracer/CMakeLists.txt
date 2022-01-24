@@ -1,9 +1,6 @@
-﻿# CMakeList.txt: projeto de CMake para raytracer, incluir origem e definir
-# lógica específica a um projeto aqui.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
-# Adicione a origem ao executável deste projeto.
-add_executable (raytracer "raytracer.cpp" "raytracer.h")
-
-# TODO: Adicione testes e instale destinos, se necessário.
+find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+add_executable (raytracer "test.cpp")
+target_link_libraries(raytracer PRIVATE ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
