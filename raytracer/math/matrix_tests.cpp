@@ -1,7 +1,9 @@
-#define BOOST_TEST_MODULE Matrix
+#define BOOST_TEST_DYN_LINK
+#ifdef STAND_ALONE
+#define BOOST_TEST_MODULE Main
+#endif
+#include <boost/test/unit_test.hpp>
 #include "matrix.h"
-#include "lup_decomposition.h"
-#include <boost/test/included/unit_test.hpp>
 #include <iostream>
 
 // Nota: voce ta cagando para comparacao float em varios testes
