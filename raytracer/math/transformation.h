@@ -8,6 +8,9 @@
 namespace Transformation {
 	template <typename T>
 	Matrix<T, 4, 4> translation3D(T x, T y, T z);
+
+	template <typename T>
+	Matrix<T, 4, 4> scale3D(T x, T y, T z);
 }
 
 #include "transformation.tcc"

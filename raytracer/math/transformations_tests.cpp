@@ -32,3 +32,37 @@ BOOST_AUTO_TEST_CASE(test_translation_not_affecting_vectors) {
     auto translationMatrixFloat = Transformation::translation3D(1.21f, 1.3f, 2.23f);
     BOOST_CHECK(translationMatrixFloat * vecFloat == vecFloat);
 }
+
+
+BOOST_AUTO_TEST_CASE(test_scaling_a_point) {
+    Matrix<int, 4, 1> point({ {-4}, {6}, {8}, {1} });
+    auto scaleMatrix = Transformation::scale3D(2, 3, 4);
+    Matrix<int, 4, 1> expected({ {-8}, {18}, {32}, {1} });
+    BOOST_CHECK(scaleMatrix * point == expected);
+
+    Matrix<float, 4, 1> pointFloat({ {1.31f}, {2.21f}, {3.33f}, {1} });
+    auto scaleMatrixFloat = Transformation::scale3D(1.21f, 1.3f, 2.23f);
+    Matrix<float, 4, 1> expectedFloat({ {1.5851f}, {2.873f}, {7.4259f}, {1} });
+    BOOST_CHECK(scaleMatrixFloat * pointFloat == expectedFloat);
+}
+
+BOOST_AUTO_TEST_CASE(test_scaling_a_vector) {
+    Matrix<int, 4, 1> vec({ {-4}, {6}, {8}, {0} });
+    auto scaleMatrix = Transformation::scale3D(2, 3, 4);
+    Matrix<int, 4, 1> expected({ {-8}, {18}, {32}, {0} });
+    BOOST_CHECK(scaleMatrix * vec == expected);
+
+    Matrix<float, 4, 1> vecFloat({ {1.31f}, {2.21f}, {3.33f}, {0} });
+    auto scaleMatrixFloat = Transformation::scale3D(1.21f, 1.3f, 2.23f);
+    Matrix<float, 4, 1> expectedFloat({ {1.5851f}, {2.873f}, {7.4259f}, {0} });
+    BOOST_CHECK(scaleMatrixFloat * vecFloat == expectedFloat);
+}
+
+BOOST_AUTO_TEST_CASE(test_scaling_a_vector_by_the_inverse_of_a_scaling_matrix) {
+    Matrix<float, 4, 1> vec({ {-4}, {6}, {8}, {0} });
+    auto scaleMatrix = Transformation::scale3D(2.0, 3.0, 4.0);
+    invert(scaleMatrix);
+    Matrix<double, 4, 1> expected({ {-2}, {2}, {2}, {0} });
+    std::cout << scaleMatrix << std::endl;
+    BOOST_CHECK(scaleMatrix * vec == expected);
+}
