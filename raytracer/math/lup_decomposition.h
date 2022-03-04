@@ -12,7 +12,7 @@ namespace LUP {
 	};
 
 	template <typename T, std::size_t N> 
-	std::optional<Factors<T, N>> decompose(Matrix<T, N, N> m);
+	std::optional<Factors<T, N>> factors(Matrix<T, N, N> m);
 }
 
 #include "lup_decomposition.tcc"

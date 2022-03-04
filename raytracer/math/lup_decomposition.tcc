@@ -2,31 +2,33 @@
 
 namespace LUP {
 	template <typename T, size_t N>
-	std::optional<Factors<T, N>> decompose(Matrix<T, N, N> m) {
+	std::optional<Factors<T, N>> factors(Matrix<T, N, N> m) {
+		static_assert(std::is_floating_point_v<T>, "LUP factors should be of floating point types");
 		Matrix<size_t, 1, N + 1> P;
 		for (size_t i = 0; i <= N; i++) {
 			P(0, i) = i;
 		}
 
-		for (size_t col = 0; col < N; col++) {
-			const size_t lineOfMaxInColBelowDiag = findLineOfMaxValueInColBelowDiag(m, col);
-			if (std::abs(m(lineOfMaxInColBelowDiag, col)) < floats::EPSILON) {
+		for (size_t diag = 0; diag < N; diag++) {
+			const size_t lineOfMaxInColFromDiagToEnd = findLineOfMaxValueInColFromDiagToEnd(m, diag);
+			if (std::abs(m(lineOfMaxInColFromDiagToEnd, diag)) < floats::EPSILON) {
 				return std::nullopt; // can't decompose, matrix is degenerate
 			}
-			if (lineOfMaxInColBelowDiag != col) {
-				pivot(lineOfMaxInColBelowDiag, col, P, m);
+			if (lineOfMaxInColFromDiagToEnd != diag) {
+				// the pivot should always be the biggest element for stability
+				pivot(lineOfMaxInColFromDiagToEnd, diag, P, m);
 			}
-			doDecompose(m, col);
+			decompose(m, diag);
 		}
-		return Factors<T, N>{m, P}; // decomposition done
+		return Factors<T,N>{m, P}; // decomposition done
 	}
 
 	template<typename T, size_t N>
-	static size_t findLineOfMaxValueInColBelowDiag(Matrix<T, N, N>& m, const size_t col)
+	static size_t findLineOfMaxValueInColFromDiagToEnd(Matrix<T, N, N>& m, const size_t diag)
 	{
-		size_t lineOfMaxAbsValue = col;
-		for (size_t k = col + 1; k < N; k++) {
-			if (std::abs(m(k, col)) > std::abs(m(lineOfMaxAbsValue, col))) {
+		size_t lineOfMaxAbsValue = diag;
+		for (size_t k = diag + 1; k < N; k++) {
+			if (std::abs(m(k, diag)) > std::abs(m(lineOfMaxAbsValue, diag))) {
 				lineOfMaxAbsValue = k;
 			}
 		}
@@ -45,12 +47,19 @@ namespace LUP {
 	}
 
 	template<typename T, size_t N>
-	static void doDecompose(Matrix<T, N, N>& m, const size_t col)
+	static void decompose(Matrix<T, N, N>& m, const size_t diag)
 	{
-		for (size_t j = col + 1; j < N; j++) {
-			m(j, col) /= m(col, col);
-			for (size_t k = col + 1; k < N; k++) {
-				m(j, k) -= m(j, col) * m(col, k);
+		for (size_t line = diag + 1; line < N; line++) {
+			/*
+			 * m(line, diag) will keep the value of the divisions we applied
+			 * ie: [3,2,1]
+			 *     [1,2,5] - L1*1/3 => m(1,0) = 1/3 
+			 *     [2,0,1] - L1*2/3 => m(2,0) = 2/3
+			 * those divisions are the Lower matrix
+			 */
+			m(line, diag) /= m(diag, diag); 
+			for (size_t col = diag + 1; col < N; col++) {
+				m(line, col) -= m(line, diag) * m(diag, col);
 			}
 		}
 	}

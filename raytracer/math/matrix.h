@@ -9,9 +9,12 @@
 #include <cmath>
 #include <optional>
 
-template <typename T,std::size_t N> struct LUPFactors;
 
-template <typename T, std::size_t TRows, std::size_t TCols> class Matrix {
+template <typename T, std::size_t TRows, std::size_t TCols>
+class Matrix {
+
+    static_assert(std::is_arithmetic_v<T>, "Matrix should be of arithmetic types");
+
 public:
     Matrix() : data_({ {} }) {};
 
@@ -36,19 +39,17 @@ public:
 
     const T& operator()(std::size_t i, std::size_t j) const { return data_[i][j]; }
 
-    template <typename T, std::size_t TRows1, std::size_t TCols1, std::size_t TRows2, std::size_t TCols2>
-    friend bool operator==(const Matrix<T,TRows1, TCols1>& lhs, const Matrix<T,TRows2, TCols2>& rhs);
+    template <typename U, size_t TRowsOther, size_t TColsOther>
+    bool operator==(const Matrix<U, TRowsOther, TColsOther>& rhs);
 
-    template <typename T, std::size_t TRowsOther, std::size_t TColsOther> friend bool operator!=(const Matrix& lhs, const Matrix<T,TRowsOther, TColsOther>& rhs) {
-        return !(lhs == rhs);
+    template <typename U, std::size_t TRowsOther, std::size_t TColsOther> 
+    bool operator!=(const Matrix<U,TRowsOther, TColsOther>& rhs) {
+        return !(*this == rhs);
     }
-
-    // TODO
-    template <std::size_t N> void transform(std::initializer_list<Matrix<T,N, N>>& transformations);
 
     Matrix<T, TCols, TRows> transpose();
 
-    Matrix<T, TCols - 1, TRows - 1> copyWithout(unsigned int row_to_delete, unsigned int col_to_delete);
+    Matrix<T, TCols - 1, TRows - 1> copyWithout(unsigned int rowToDelete, unsigned int colToDelete);
 
 private:
     std::array<std::array<T, TCols>, TRows> data_;
@@ -57,8 +58,8 @@ private:
 template <typename T, std::size_t N>
 T det(const Matrix<T,N, N>& m);
 
-template <typename T, std::size_t N> 
-std::optional<Matrix<T,N, N>> invert(const Matrix<T,N, N>& m);
+template <typename T, std::size_t N>
+bool invert(const Matrix<T, N, N>& m);
 
 #include "matrix.tcc"
 

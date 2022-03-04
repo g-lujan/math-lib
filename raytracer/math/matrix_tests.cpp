@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(test_submatrices_of_4x4) {
 
 BOOST_AUTO_TEST_CASE(test_LU_factorization_2x2) {
     Matrix<float, 2, 2> A({ {1, 2}, {3, 4} });
-    if (auto factors = LUP::decompose(A)) {
+    if (auto factors = LUP::factors(A)) {
         BOOST_CHECK(floats::equal(factors->LU(0,0), 3.0f));
         BOOST_CHECK(floats::equal(factors->LU(0,1), 4.0f));
         BOOST_CHECK(floats::equal(factors->LU(1,0), 0.333333f));
