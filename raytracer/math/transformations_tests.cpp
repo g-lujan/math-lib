@@ -6,6 +6,7 @@
 #include "matrix.h"
 #include "transformation.h"
 #include "lup_decomposition.h"
+#include "constants.h"
 
 BOOST_AUTO_TEST_CASE(test_translation_of_point) {
     Matrix<int, 4, 1> point({ {1}, {2}, {3}, {1} });
@@ -63,6 +64,20 @@ BOOST_AUTO_TEST_CASE(test_scaling_a_vector_by_the_inverse_of_a_scaling_matrix) {
     auto scaleMatrix = Transformation::scale3D(2.0, 3.0, 4.0);
     invert(scaleMatrix);
     Matrix<double, 4, 1> expected({ {-2}, {2}, {2}, {0} });
-    std::cout << scaleMatrix << std::endl;
     BOOST_CHECK(scaleMatrix * vec == expected);
+}
+
+BOOST_AUTO_TEST_CASE(test_rot_point_around_x_axis) {
+    Matrix<int, 4, 1> point({ {0}, {1}, {0}, {1} });
+    auto halfQuarterRotX = Transformation::rotX(Constants::PI/4);
+    Matrix<double, 4, 1> pointRotatedHalfQuarter({ {0}, {std::sqrt(2)/2}, {std::sqrt(2) / 2}, {1}});
+    BOOST_CHECK(halfQuarterRotX * point == pointRotatedHalfQuarter);
+
+    invert(halfQuarterRotX);
+    Matrix<double, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {0}, {std::sqrt(2) / 2}, {-std::sqrt(2) / 2}, {1} });
+    BOOST_CHECK(halfQuarterRotX * point == pointRotatedHalfQuarterCounterClockwise);
+
+    auto fullQuarterRotX = Transformation::rotX(Constants::PI / 2);
+    Matrix<double, 4, 1> pointRotatedFullQuarter({ {0}, {0}, {1}, {1} });
+    BOOST_CHECK(fullQuarterRotX * point == pointRotatedFullQuarter);
 }

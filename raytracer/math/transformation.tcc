@@ -12,4 +12,8 @@ namespace Transformation {
 		Matrix<T, 4, 4> scalingMatrix({ {x, 0, 0, 0}, {0, y, 0, 0}, {0, 0, z, 0}, {0, 0, 0, 1} });
 		return scalingMatrix;
 	}
+	template<typename T>
+	Matrix<T, 4, 4> rotX(T theta){
+		return Matrix<T, 4, 4>({ {1, 0, 0, 0}, {0, std::cos(theta), -std::sin(theta), 0}, {0, std::sin(theta), std::cos(theta), 0}, {0, 0, 0, 1}});
+	}
 }
