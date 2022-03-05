@@ -81,3 +81,33 @@ BOOST_AUTO_TEST_CASE(test_rot_point_around_x_axis) {
     Matrix<double, 4, 1> pointRotatedFullQuarter({ {0}, {0}, {1}, {1} });
     BOOST_CHECK(fullQuarterRotX * point == pointRotatedFullQuarter);
 }
+
+BOOST_AUTO_TEST_CASE(test_rot_point_around_y_axis) {
+    Matrix<int, 4, 1> point({ {0}, {0}, {1}, {1} });
+    auto halfQuarterRotY = Transformation::rotY(Constants::PI / 4);
+    Matrix<double, 4, 1> pointRotatedHalfQuarter({ {std::sqrt(2) / 2}, {0}, {std::sqrt(2) / 2}, {1} });
+    BOOST_CHECK(halfQuarterRotY * point == pointRotatedHalfQuarter);
+
+    invert(halfQuarterRotY);
+    Matrix<double, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {-std::sqrt(2) / 2}, {0}, {std::sqrt(2) / 2}, {1} });
+    BOOST_CHECK(halfQuarterRotY * point == pointRotatedHalfQuarterCounterClockwise);
+
+    auto fullQuarterRotY = Transformation::rotY(Constants::PI / 2);
+    Matrix<double, 4, 1> pointRotatedFullQuarter({ {1}, {0}, {0}, {1} });
+    BOOST_CHECK(fullQuarterRotY * point == pointRotatedFullQuarter);
+}
+
+BOOST_AUTO_TEST_CASE(test_rot_point_around_z_axis) {
+    Matrix<int, 4, 1> point({ {0}, {1}, {0}, {1} });
+    auto halfQuarterRotZ = Transformation::rotZ(Constants::PI / 4);
+    Matrix<double, 4, 1> pointRotatedHalfQuarter({ {-std::sqrt(2) / 2}, {std::sqrt(2) / 2}, {0}, {1} });
+    BOOST_CHECK(halfQuarterRotZ * point == pointRotatedHalfQuarter);
+
+    invert(halfQuarterRotZ);
+    Matrix<double, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {std::sqrt(2) / 2}, {std::sqrt(2) / 2}, {0}, {1} });
+    BOOST_CHECK(halfQuarterRotZ * point == pointRotatedHalfQuarterCounterClockwise);
+
+    auto fullQuarterRotZ = Transformation::rotZ(Constants::PI / 2);
+    Matrix<double, 4, 1> pointRotatedFullQuarter({ {-1}, {0}, {0}, {1} });
+    BOOST_CHECK(fullQuarterRotZ * point == pointRotatedFullQuarter);
+}

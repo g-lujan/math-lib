@@ -13,7 +13,13 @@ namespace Transformation {
 	Matrix<T, 4, 4> scale3D(T x, T y, T z);
 
 	template <typename T>
-	Matrix<T, 4, 4> rotX(T theta);
+	Matrix<T, 4, 4> rotX(T angle);
+
+	template <typename T>
+	Matrix<T, 4, 4> rotY(T angle);
+
+	template <typename T>
+	Matrix<T, 4, 4> rotZ(T angle);
 }
 
 #include "transformation.tcc"
