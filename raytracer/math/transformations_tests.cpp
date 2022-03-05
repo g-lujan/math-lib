@@ -70,45 +70,45 @@ BOOST_AUTO_TEST_CASE(test_scaling_a_vector_by_the_inverse_of_a_scaling_matrix) {
 BOOST_AUTO_TEST_CASE(test_rot_point_around_x_axis) {
     Matrix<int, 4, 1> point({ {0}, {1}, {0}, {1} });
     auto halfQuarterRotX = Transformation::rotX(Constants::PI/4);
-    Matrix<double, 4, 1> pointRotatedHalfQuarter({ {0}, {std::sqrt(2)/2}, {std::sqrt(2) / 2}, {1}});
+    Matrix<float, 4, 1> pointRotatedHalfQuarter({ {0}, {std::sqrtf(2)/2}, {std::sqrtf(2) / 2}, {1}});
     BOOST_CHECK(halfQuarterRotX * point == pointRotatedHalfQuarter);
 
     invert(halfQuarterRotX);
-    Matrix<double, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {0}, {std::sqrt(2) / 2}, {-std::sqrt(2) / 2}, {1} });
+    Matrix<float, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {0}, {std::sqrtf(2) / 2}, {-std::sqrtf(2) / 2}, {1} });
     BOOST_CHECK(halfQuarterRotX * point == pointRotatedHalfQuarterCounterClockwise);
 
     auto fullQuarterRotX = Transformation::rotX(Constants::PI / 2);
-    Matrix<double, 4, 1> pointRotatedFullQuarter({ {0}, {0}, {1}, {1} });
+    Matrix<float, 4, 1> pointRotatedFullQuarter({ {0}, {0}, {1}, {1} });
     BOOST_CHECK(fullQuarterRotX * point == pointRotatedFullQuarter);
 }
 
 BOOST_AUTO_TEST_CASE(test_rot_point_around_y_axis) {
     Matrix<int, 4, 1> point({ {0}, {0}, {1}, {1} });
     auto halfQuarterRotY = Transformation::rotY(Constants::PI / 4);
-    Matrix<double, 4, 1> pointRotatedHalfQuarter({ {std::sqrt(2) / 2}, {0}, {std::sqrt(2) / 2}, {1} });
+    Matrix<float, 4, 1> pointRotatedHalfQuarter({ {std::sqrtf(2) / 2}, {0}, {std::sqrtf(2) / 2}, {1} });
     BOOST_CHECK(halfQuarterRotY * point == pointRotatedHalfQuarter);
 
     invert(halfQuarterRotY);
-    Matrix<double, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {-std::sqrt(2) / 2}, {0}, {std::sqrt(2) / 2}, {1} });
+    Matrix<float, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {-std::sqrtf(2) / 2}, {0}, {std::sqrtf(2) / 2}, {1} });
     BOOST_CHECK(halfQuarterRotY * point == pointRotatedHalfQuarterCounterClockwise);
 
     auto fullQuarterRotY = Transformation::rotY(Constants::PI / 2);
-    Matrix<double, 4, 1> pointRotatedFullQuarter({ {1}, {0}, {0}, {1} });
+    Matrix<float, 4, 1> pointRotatedFullQuarter({ {1}, {0}, {0}, {1} });
     BOOST_CHECK(fullQuarterRotY * point == pointRotatedFullQuarter);
 }
 
 BOOST_AUTO_TEST_CASE(test_rot_point_around_z_axis) {
     Matrix<int, 4, 1> point({ {0}, {1}, {0}, {1} });
     auto halfQuarterRotZ = Transformation::rotZ(Constants::PI / 4);
-    Matrix<double, 4, 1> pointRotatedHalfQuarter({ {-std::sqrt(2) / 2}, {std::sqrt(2) / 2}, {0}, {1} });
+    Matrix<float, 4, 1> pointRotatedHalfQuarter({ {-std::sqrtf(2) / 2}, {std::sqrtf(2) / 2}, {0}, {1} });
     BOOST_CHECK(halfQuarterRotZ * point == pointRotatedHalfQuarter);
 
     invert(halfQuarterRotZ);
-    Matrix<double, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {std::sqrt(2) / 2}, {std::sqrt(2) / 2}, {0}, {1} });
+    Matrix<float, 4, 1> pointRotatedHalfQuarterCounterClockwise({ {std::sqrtf(2) / 2}, {std::sqrtf(2) / 2}, {0}, {1} });
     BOOST_CHECK(halfQuarterRotZ * point == pointRotatedHalfQuarterCounterClockwise);
 
     auto fullQuarterRotZ = Transformation::rotZ(Constants::PI / 2);
-    Matrix<double, 4, 1> pointRotatedFullQuarter({ {-1}, {0}, {0}, {1} });
+    Matrix<float, 4, 1> pointRotatedFullQuarter({ {-1}, {0}, {0}, {1} });
     BOOST_CHECK(fullQuarterRotZ * point == pointRotatedFullQuarter);
 }
 
@@ -183,4 +183,21 @@ BOOST_AUTO_TEST_CASE(test_compound_shearing) {
     auto shearing = Transformation::shearing(2.1f, 2.0f, 1.3f, 0.1f, 0.0f, 1.0f);
     Matrix<float, 4, 1> expected({ {2+2.1f*3+2.0f*4}, {3+1.3f*2+0.1f*4}, {4+1.0f*3}, {1} });
     BOOST_CHECK(shearing * point == expected);
+}
+
+BOOST_AUTO_TEST_CASE(test_trasformations_in_sequence) {
+    Matrix<int, 4, 1> point({ {1}, {0}, {1}, {1} });
+    auto rotX = Transformation::rotX(Constants::PI/2);
+    auto scale = Transformation::scale3D(5, 5, 5);
+    auto translation = Transformation::translation3D(10, 5, 7);
+    // apply rot
+    auto pointRotated = rotX * point;
+    // apply scale
+    auto pointRotatedAndScaled = scale * pointRotated;
+    // apply translation
+    auto pointRotatedAndScaledTranslated = translation * pointRotatedAndScaled;
+
+    Matrix<float, 4, 1> expected({ {15}, {0}, {7}, {1} });
+    BOOST_CHECK(pointRotatedAndScaledTranslated == expected);
+    BOOST_CHECK(pointRotatedAndScaledTranslated == translation * scale * rotX * point);
 }
