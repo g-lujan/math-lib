@@ -111,3 +111,76 @@ BOOST_AUTO_TEST_CASE(test_rot_point_around_z_axis) {
     Matrix<double, 4, 1> pointRotatedFullQuarter({ {-1}, {0}, {0}, {1} });
     BOOST_CHECK(fullQuarterRotZ * point == pointRotatedFullQuarter);
 }
+
+BOOST_AUTO_TEST_CASE(test_shearing_x_in_proportion_to_y) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(1, 0, 0, 0, 0, 0);
+    Matrix<int, 4, 1> expected({ {5}, {3}, {4}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+
+    Matrix<float, 4, 1> pointf({ {2.2f}, {3.1f}, {4.9f}, {1.0f} });
+    Matrix<float, 4, 1> expectedf({ {5.3f}, {3.1f}, {4.9f}, {1.0f} });
+    BOOST_CHECK(shearing * pointf == expectedf);
+}
+
+BOOST_AUTO_TEST_CASE(test_shearing_x_in_proportion_to_z) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(0, 2, 0, 0, 0, 0);
+    Matrix<int, 4, 1> expected({ {10}, {3}, {4}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+
+    Matrix<float, 4, 1> pointf({ {2.2f}, {3.1f}, {4.9f}, {1.0f} });
+    Matrix<float, 4, 1> expectedf({ {12.0f}, {3.1f}, {4.9f}, {1.0f} });
+    BOOST_CHECK(shearing * pointf == expectedf);
+}
+
+BOOST_AUTO_TEST_CASE(test_shearing_y_in_proportion_to_x) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(0, 0, 1, 0, 0, 0);
+    Matrix<int, 4, 1> expected({ {2}, {5}, {4}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+
+    Matrix<float, 4, 1> pointf({ {2.2f}, {3.1f}, {4.9f}, {1.0f} });
+    Matrix<float, 4, 1> expectedf({ {2.2f}, {5.3f}, {4.9f}, {1.0f} });
+    BOOST_CHECK(shearing * pointf == expectedf);
+}
+
+BOOST_AUTO_TEST_CASE(test_shearing_y_in_proportion_to_z) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(0, 0, 0, 1, 0, 0);
+    Matrix<int, 4, 1> expected({ {2}, {7}, {4}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+
+    Matrix<float, 4, 1> pointf({ {2.2f}, {3.1f}, {4.9f}, {1.0f} });
+    Matrix<float, 4, 1> expectedf({ {2.2f}, {8.0f}, {4.9f}, {1.0f} });
+    BOOST_CHECK(shearing * pointf == expectedf);
+}
+
+BOOST_AUTO_TEST_CASE(test_shearing_z_in_proportion_to_x) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(0, 0, 0, 0, 3, 0);
+    Matrix<int, 4, 1> expected({ {2}, {3}, {10}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+
+    Matrix<float, 4, 1> pointf({ {2.2f}, {3.1f}, {4.9f}, {1.0f} });
+    Matrix<float, 4, 1> expectedf({ {2.2f}, {3.1f}, {11.5f}, {1.0f} });
+    BOOST_CHECK(shearing * pointf == expectedf);
+}
+
+BOOST_AUTO_TEST_CASE(test_shearing_z_in_proportion_to_y) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(0, 0, 0, 0, 0, 1);
+    Matrix<int, 4, 1> expected({ {2}, {3}, {7}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+
+    Matrix<float, 4, 1> pointf({ {2.2f}, {3.1f}, {4.9f}, {1.0f} });
+    Matrix<float, 4, 1> expectedf({ {2.2f}, {3.1f}, {8.0f}, {1.0f} });
+    BOOST_CHECK(shearing * pointf == expectedf);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_shearing) {
+    Matrix<int, 4, 1> point({ {2}, {3}, {4}, {1} });
+    auto shearing = Transformation::shearing(2.1f, 2.0f, 1.3f, 0.1f, 0.0f, 1.0f);
+    Matrix<float, 4, 1> expected({ {2+2.1f*3+2.0f*4}, {3+1.3f*2+0.1f*4}, {4+1.0f*3}, {1} });
+    BOOST_CHECK(shearing * point == expected);
+}
