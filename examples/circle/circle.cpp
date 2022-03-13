@@ -1,8 +1,5 @@
-#include "../../graphics/canvas.h"
-#include "../../graphics/render.h"
-#include "../../math/matrix.h"
-#include "../../math/transformation.h"
-#include "../../math/constants.h"
+#include <raytracer/math.h>
+#include <raytracer/graphics.h>
 
 int main() {
 	Canvas canvas(500, 500);

@@ -9,7 +9,6 @@
 #include <cmath>
 #include <optional>
 
-
 template <typename T, std::size_t TRows, std::size_t TCols>
 class Matrix {
 

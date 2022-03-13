@@ -1,12 +1,9 @@
-#define BOOST_TEST_DYN_LINK
 #ifdef STAND_ALONE
 #define BOOST_TEST_MODULE Main
 #endif
 #include <boost/test/unit_test.hpp>
-#include "../canvas.h"
-#include "../../math/float_operations.h"
-#include "../render.h"
-#include <iostream>
+#include <raytracer/math.h>
+#include <raytracer/graphics.h>
 
 BOOST_AUTO_TEST_CASE(test_canvas_setup) {
     Canvas c(800, 600);

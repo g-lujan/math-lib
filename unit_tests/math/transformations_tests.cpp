@@ -1,12 +1,8 @@
-#define BOOST_TEST_DYN_LINK
 #ifdef STAND_ALONE
 #   define BOOST_TEST_MODULE Main
 #endif
 #include <boost/test/unit_test.hpp>
-#include "matrix.h"
-#include "transformation.h"
-#include "lup_decomposition.h"
-#include "constants.h"
+#include <raytracer/math.h>
 
 BOOST_AUTO_TEST_CASE(test_translation_of_point) {
     Matrix<int, 4, 1> point({ {1}, {2}, {3}, {1} });
