@@ -102,6 +102,23 @@ BOOST_AUTO_TEST_CASE(test_adding_matrices) {
     BOOST_CHECK(expected == result);
 }
 
+BOOST_AUTO_TEST_CASE(test_scalar_multiplication) {
+    Matrix<float, 4, 4> A({ {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 8, 7, 6}, {5, 4, 3, 2} });
+    Matrix<float, 4, 4> Atimes2({ {2, 4, 6, 8}, {10, 12, 14, 16}, {18, 16, 14, 12}, {10, 8, 6, 4} });
+    BOOST_CHECK(Atimes2 == (A * 2.0f));
+    BOOST_CHECK(Atimes2 == (2 * A));
+
+    Matrix<float, 2, 4> B({ {1, 2, 3, 4}, {5, 6, 7, 8}});
+    Matrix<float, 2, 4> Btimes2andAHalf({ {2.5f, 5.0f, 7.5f, 10.0f}, {12.5f, 15.0f, 17.5f, 20.0f} });
+    BOOST_CHECK(Btimes2andAHalf == (B * 2.5f));
+
+    Matrix<int, 1, 2> C({ {1, 2} });
+    Matrix<int, 1, 2> Ctimes5({ {5, 10} });
+    BOOST_CHECK(Ctimes5 == (C * 5));
+    BOOST_CHECK(Ctimes5 == (5 * C));
+    BOOST_CHECK(Ctimes5 == (5.0f * C));
+}
+
 BOOST_AUTO_TEST_CASE(test_multiplying_4x4_matrices) {
     Matrix<float, 4, 4> A({ {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 8, 7, 6}, {5, 4, 3, 2} });
     Matrix<float, 4, 4> B({ {-2, 1, 2, 3}, {3, 2, 1, -1}, {4, 3, 6, 5}, {1, 2, 7, 8} });

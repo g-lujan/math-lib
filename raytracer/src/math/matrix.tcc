@@ -20,10 +20,26 @@ Matrix<std::common_type_t<T,U>, TRows, TCols> operator*(const Matrix<T, TRows, T
 	return productResult;
 }
 
+template <typename T, typename U, size_t TRows, size_t TCols>
+Matrix<std::common_type_t<T, U>, TRows, TCols> operator*(const Matrix<T, TRows, TCols>& lhs, const U& rhs) {
+	Matrix<std::common_type_t<T, U>, TRows, TCols> productResult;
+	for (size_t i = 0; i < TRows; i++) {
+		for (size_t j = 0; j < TCols; j++) {
+			productResult(i, j) += lhs(i, j) * rhs;
+		}
+	}
+	return productResult;
+}
+
+template <typename T, typename U, size_t TRows, size_t TCols>
+Matrix<std::common_type_t<T, U>, TRows, TCols> operator*(const U& rhs, const Matrix<T, TRows, TCols>& lhs) {
+	return lhs * rhs;
+}
+
 template <typename T, size_t TRows, size_t TCols>
 template <typename U, size_t TRowsOther, size_t TColsOther>
 bool Matrix<T, TRows, TCols>::operator==(const Matrix<U, TRowsOther, TColsOther>& rhs){
-	if (!std::is_same_v<T, U> || TRows != TRowsOther || TCols != TColsOther) {
+	if (TRows != TRowsOther || TCols != TColsOther) {
 		return false;
 	}
 	for (int i = 0; i < TRows; i++) {

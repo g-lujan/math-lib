@@ -5,6 +5,7 @@ add_definitions (-DBOOST_TEST_DYN_LINK)
 add_executable (Test 
 test_main.cpp 
 graphics/canvas_tests.cpp 
+graphics/geometry_tests.cpp
 math/matrix_tests.cpp 
 math/transformations_tests.cpp)
 
