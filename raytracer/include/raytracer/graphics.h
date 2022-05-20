@@ -5,5 +5,6 @@
 #include "../../src/graphics/image.h"
 #include "../../src/graphics/render.h"
 #include "../../src/graphics/geometry.h"
+#include "../../src/graphics/ray.h"
 
 #endif

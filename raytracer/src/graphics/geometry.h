@@ -9,6 +9,5 @@
 
 Matrix<float, 4, 1> point3D(float x, float y, float z);
 Matrix<float, 4, 1> vec3D(float x, float y, float z);
-Ray3D ray3D(const float(&origin)[3][1], const float(&direction)[3][1]);
 
 #endif
