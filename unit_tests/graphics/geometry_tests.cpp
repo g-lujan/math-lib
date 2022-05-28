@@ -2,9 +2,11 @@
 #define BOOST_TEST_MODULE Main
 #endif
 #include <boost/test/unit_test.hpp>
-#include <iostream>
 #include <raytracer/math.h>
 #include "raytracer/graphics.h"
+
+using Geometry::point3D;
+using Geometry::vec3D;
 
 BOOST_AUTO_TEST_CASE(test_create_point3D) {
 	auto point = point3D(1.0f, 2.0f, 3.0f);
