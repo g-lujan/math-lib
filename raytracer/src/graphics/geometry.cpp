@@ -10,6 +10,6 @@ namespace Geometry {
     }
 
     Intersections intersections(const Ray3D& ray, const Shape& form) {
-        return { form.intersections(ray), &form };
+        return { form.intersections(ray), form };
     }
 }
