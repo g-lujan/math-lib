@@ -38,7 +38,7 @@ Matrix<std::common_type_t<T, U>, TRows, TCols> operator*(const U& rhs, const Mat
 
 template <typename T, size_t TRows, size_t TCols>
 template <typename U, size_t TRowsOther, size_t TColsOther>
-bool Matrix<T, TRows, TCols>::operator==(const Matrix<U, TRowsOther, TColsOther>& rhs){
+bool Matrix<T, TRows, TCols>::operator==(const Matrix<U, TRowsOther, TColsOther>& rhs) const{
 	if (TRows != TRowsOther || TCols != TColsOther) {
 		return false;
 	}

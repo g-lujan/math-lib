@@ -39,10 +39,10 @@ public:
     const T& operator()(std::size_t i, std::size_t j) const { return data_[i][j]; }
 
     template <typename U, size_t TRowsOther, size_t TColsOther>
-    bool operator==(const Matrix<U, TRowsOther, TColsOther>& rhs);
+    bool operator==(const Matrix<U, TRowsOther, TColsOther>& rhs) const;
 
     template <typename U, std::size_t TRowsOther, std::size_t TColsOther> 
-    bool operator!=(const Matrix<U,TRowsOther, TColsOther>& rhs) {
+    bool operator!=(const Matrix<U,TRowsOther, TColsOther>& rhs) const{
         return !(*this == rhs);
     }
 

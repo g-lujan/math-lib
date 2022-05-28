@@ -20,6 +20,8 @@ namespace Transformation {
 
 	template <typename T>
 	Matrix<T, 4, 4> rotZ(T angle);
+
+	const Matrix<float, 4, 4> IDENTITY_F_4X4 = Matrix<float, 4, 4>({ {1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.0f} , {0.0f, 0.0f, 0.0f, 1.0f} });
 }
 
 #include "transformation.tcc"

@@ -8,7 +8,7 @@ math/matrix_tests.cpp
 math/transformations_tests.cpp
 graphics/canvas_tests.cpp 
 graphics/geometry_tests.cpp
-graphics/ray_tests.cpp)
+graphics/ray_tests.cpp "graphics/shape_tests.cpp")
 
 target_link_libraries (Test
  raytracer
