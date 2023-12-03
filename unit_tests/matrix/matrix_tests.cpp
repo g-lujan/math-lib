@@ -2,8 +2,7 @@
 #define BOOST_TEST_MODULE Main
 #endif
 #include <boost/test/unit_test.hpp>
-#include <iostream>
-#include <raytracer/math.h>
+#include "math_lib/matrix/matrix.h"
 
 // Nota: voce ta cagando para comparacao float em varios testes
 
