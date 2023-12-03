@@ -4,9 +4,8 @@
 #define _FLOAT_OPERATIONS_
 
 namespace floats {
-	const float EPSILON = 0.001f;
-	bool equal(float, float);
-}
+  const float EPSILON = 0.001f;
+  bool equal(float, float);
+} // namespace floats
 
 #endif
-

@@ -4,3 +4,4 @@ BreakBeforeBraces: Stroustrup
 BinPackArguments: false
 BinPackParameters: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true # Replace with "PackConstructorInitializers: Never", when switching to clang-format 14.
+AlwaysBreakTemplateDeclarations: Yes
