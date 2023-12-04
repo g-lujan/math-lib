@@ -6,3 +6,4 @@ project(raytracer VERSION 0.0.1 DESCRIPTION "a math lib implemented from scratch
 
 add_subdirectory ("math_lib")
 add_subdirectory ("unit_tests")
+add_subdirectory ("perf_tests")

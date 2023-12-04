@@ -4,6 +4,7 @@
 #include <iostream>
 #include <optional>
 #include <sstream>
+#include <fstream>
 
 using std::size_t;
 
@@ -186,4 +187,25 @@ template <typename T, size_t N>
 static bool isInvertible(const Matrix<T, N, N> &m)
 {
   return !(floats::equal(det(m), 0.000000000f));
+}
+
+
+template <typename T, std::size_t TRows, std::size_t TCols>
+Matrix<float, TRows, TCols> loadtxt(const std::string &path)
+{
+  Matrix<float, TRows, TCols> matrix;
+  std::ifstream in(path);
+  if (in.fail()) {
+    std::cout << "\nfile not found\n";
+  }
+  std::string line_text;
+  for (int element = 0; std::getline(in, line_text);) {
+    float value;
+    std::stringstream ss(line_text);
+    while (ss >> value) {
+      matrix(element / TCols, element % TCols) = value;
+      ++element;
+    }
+  }
+  return matrix;
 }
