@@ -1,19 +1,22 @@
-﻿add_executable (PerfTest product_test.cpp)
+﻿find_package(Python3 REQUIRED)
+
 file(COPY generate_input.py DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Test")
 file(COPY product_test_numpy.py DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Test")
 
-# run with 'cmake --build build-msvc --target generate_test_matrices_target'
-# this is not working...
-add_custom_target(generate_test_matrices_target 
-	COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/perf_tests/generate_input.py
-	COMMENT "Generating test inputs for performance tests" VERBATIM
-	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+add_executable (PerfTest product_test.cpp)
+
+add_custom_target(
+        build_perf_test_matrices
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/A.txt ${CMAKE_CURRENT_BINARY_DIR}/B.txt
 )
 
-set_target_properties(PerfTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}/Test)
+# not working with Visual Studio generator (doesn't even run)
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/A.txt ${CMAKE_CURRENT_BINARY_DIR}/B.txt
+	COMMAND Python3::Interpreter ${CMAKE_CURRENT_SOURCE_DIR}/generate_input.py
+	COMMENT "Generating test inputs for performance tests" VERBATIM
+)
 
+
+add_dependencies(PerfTest build_perf_test_matrices)
 target_link_libraries (PerfTest math_lib)
-
-# testing command
-# declares a test with our executable
-add_test(NAME perf_test COMMAND PerfTest)
