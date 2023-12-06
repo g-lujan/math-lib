@@ -13,8 +13,8 @@ Matrix<std::common_type_t<T, U>, TRows, TCols> operator*(const Matrix<T, TRows, 
 {
   Matrix<std::common_type_t<T, U>, TRows, TCols> productResult;
   for (size_t i = 0; i < TRows; i++) {
+   for (size_t k = 0; k < TCols; k++) {
     for (size_t j = 0; j < TCommon; j++) {
-      for (size_t k = 0; k < TCols; k++) {
         productResult(i, k) += lhs(i, j) * rhs(j, k);
       }
     }
