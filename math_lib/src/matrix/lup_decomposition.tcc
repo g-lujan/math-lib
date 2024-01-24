@@ -1,58 +1,53 @@
 #include "lup_decomposition.h"
 
 namespace LUP {
-  template <typename T, size_t N>
-  static size_t findLineOfMaxValueInColFromDiagToEnd(Matrix<T, N, N> &m, const size_t diag);
-  template <typename T, size_t N>
-  static void pivot(const size_t lineOfMaxInColBelowDiag, const size_t col, Matrix<size_t, 1Ui64, N + (1)> &P, Matrix<T, N, N> &m);
+
   template <typename T, size_t N>
   static void decompose(Matrix<T, N, N> &m, const size_t diag);
+
 
   template <typename T, size_t N>
   std::optional<Factors<T, N>> factors(Matrix<T, N, N> m)
   {
     static_assert(std::is_floating_point_v<T>, "LUP factors should be of floating point types");
+
     Matrix<size_t, 1, N + 1> P;
-    for (size_t i = 0; i <= N; i++) {
-      P(0, i) = i;
+    for (size_t col = 0; col <= N; col++) {
+      P(0, col) = col;
     }
 
+
     for (size_t diag = 0; diag < N; diag++) {
-      const size_t lineOfMaxInColFromDiagToEnd = findLineOfMaxValueInColFromDiagToEnd(m, diag);
-      if (std::abs(m(lineOfMaxInColFromDiagToEnd, diag)) < floats::EPSILON) {
+      /* the line which contains the max abs value in the column starting at diag */
+      size_t lineOfMaxInCol = diag;
+      for (size_t line = diag + 1; line < N; ++line) {
+        if (std::abs(m(line, diag)) > std::abs(m(lineOfMaxInCol, diag))) {
+          lineOfMaxInCol = line;
+        }
+      }
+
+      if (std::abs(m(lineOfMaxInCol, diag)) < floats::EPSILON) {
         return std::nullopt; // can't decompose, matrix is degenerate
       }
-      if (lineOfMaxInColFromDiagToEnd != diag) {
-        // the pivot should always be the biggest element for stability
-        pivot(lineOfMaxInColFromDiagToEnd, diag, P, m);
+
+      /*
+      * the pivots should be ordered in a way that no element bigger than it is below it
+      * in order to improve stability
+      */
+      if (lineOfMaxInCol != diag) {
+        // pivoting P
+        std::swap(P(0, diag), P(0, lineOfMaxInCol));
+        // pivoting the matrix
+        m.swapRows(diag, lineOfMaxInCol);
+        // counting pivots starting from N (for determinant)
+        P(0, N)++;
       }
       decompose(m, diag);
     }
     return Factors<T, N>{m, P}; // decomposition done
   }
 
-  template <typename T, size_t N>
-  static size_t findLineOfMaxValueInColFromDiagToEnd(Matrix<T, N, N> &m, const size_t diag)
-  {
-    size_t lineOfMaxAbsValue = diag;
-    for (size_t k = diag + 1; k < N; k++) {
-      if (std::abs(m(k, diag)) > std::abs(m(lineOfMaxAbsValue, diag))) {
-        lineOfMaxAbsValue = k;
-      }
-    }
-    return lineOfMaxAbsValue;
-  }
 
-  template <typename T, size_t N>
-  static void pivot(const size_t lineOfMaxInColBelowDiag, const size_t col, Matrix<size_t, 1Ui64, N + (1)> &P, Matrix<T, N, N> &m)
-  {
-    // pivoting P
-    std::swap(P(0, col), P(0, lineOfMaxInColBelowDiag));
-    // pivoting the matrix
-    m.swapRows(col, lineOfMaxInColBelowDiag);
-    // counting pivots starting from N (for determinant)
-    P(0, N)++;
-  }
 
   template <typename T, size_t N>
   static void decompose(Matrix<T, N, N> &m, const size_t diag)

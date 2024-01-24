@@ -3,11 +3,9 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
-#include <algorithm>
 #include <vector>
 #include <cassert>
 #include <cmath>
-#include <optional>
 #include <string>
 
 template <typename T, std::size_t TRows, std::size_t TCols>
@@ -33,7 +31,7 @@ public:
 
   inline std::size_t rows() const { return TRows; };
 
-  inline void swapRows(std::size_t i, std::size_t j) { std::swap(data_[i], data_[j]); }
+  inline void swapRows(std::size_t row1, std::size_t row2) { std::swap(data_[row1], data_[row2]); }
 
   inline std::size_t cols() const { return TCols; };
 

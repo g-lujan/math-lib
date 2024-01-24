@@ -1,6 +1,8 @@
 #include "../base_operations/float_operations.h"
 #include "lup_decomposition.h"
 #include "matrix.h"
+#include <algorithm>
+#include <optional>
 #include <iostream>
 #include <optional>
 #include <sstream>
@@ -123,7 +125,7 @@ T det(const Matrix<T, N, N> &m)
 template <typename T, size_t N>
 bool invert(Matrix<T, N, N> &m)
 {
-  static_assert(std::is_floating_point_v<T>, "A Matrix of floating point values is required for invertion.");
+  static_assert(std::is_floating_point_v<T>, "Floating point type required to invert a matrix.");
   if (!isInvertible(m)) {
     return false;
   }

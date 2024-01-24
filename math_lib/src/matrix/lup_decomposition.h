@@ -11,6 +11,10 @@ namespace LUP {
     Matrix<size_t, 1, N + 1> P;
   };
 
+  /*
+  * This is quite expensive, as we need to make a copy of the input matrix M.
+  * Maybe there is a better way to keep track of the matrix elements?
+  */
   template <typename T, std::size_t N>
   std::optional<Factors<T, N>> factors(Matrix<T, N, N> m);
 } // namespace LUP

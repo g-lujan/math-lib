@@ -4,13 +4,12 @@
 
 int main()
 {
-  Matrix<float, 300, 200> A = loadtxt<float, 300, 200>("A.txt");
-  Matrix<float, 200, 300> B = loadtxt<float, 200, 300>("B.txt");
+  Matrix<float, 3000, 2000> A = loadtxt<float, 3000, 2000>("A.txt");
+  Matrix<float, 2000, 3000> B = loadtxt<float, 2000, 3000>("B.txt");
 
   auto begin = std::chrono::high_resolution_clock::now();
-  Matrix<float, 300, 300> AxB = A * B;
+  Matrix<float, 3000, 3000> AxB = A * B;
   auto end = std::chrono::high_resolution_clock::now();
 
-  std::cout << AxB << std::endl;
   std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin) << std::endl;
 }

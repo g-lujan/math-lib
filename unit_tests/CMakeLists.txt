@@ -7,10 +7,7 @@ test_main.cpp
 matrix/matrix_tests.cpp 
 matrix/transformations_tests.cpp)
 
-target_link_libraries (Test
- math_lib
- Boost::unit_test_framework
- )
+target_link_libraries (Test math_lib Boost::unit_test_framework)
 
 # testing command
 # declares a test with our executable
